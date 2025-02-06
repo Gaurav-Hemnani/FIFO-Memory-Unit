@@ -44,9 +44,8 @@ rptr
 	always @(posedge clk) begin
 		if(fifo_we)
 			data_out2[wptr[3:0]] <=data_in ;
-		end
-		assign data_out = data_out2[rptr[3:0]];
-    end
+	end
+	assign data_out = data_out2[rptr[3:0]];
 endmodule
 
 // Verilog code for Read Pointer sub-module
@@ -69,8 +68,7 @@ module read_pointer(
 			rptr <= rptr + 5'b000001;
 		else
 			rptr <= rptr;
-		end
-    end
+	end
 endmodule
 
 // Verilog code for Status Signals sub-module
@@ -129,7 +127,6 @@ module status_signal(
             else
                 fifo_underflow <= fifo_underflow;
         end
-    end
 endmodule
 
 // Verilog project: Verilog code for FIFO memory
@@ -155,5 +152,4 @@ module write_pointer(
 		else
 			wptr <= wptr;
 		end
-    end
 endmodule
