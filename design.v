@@ -54,7 +54,7 @@ module memory_array(
 
 	always @(posedge clk) begin
 		if(fifo_we)
-			data_out2[wptr[3:0]] <=data_in ;
+			data_out2[wptr[3:0]] <= data_in ;
 	end
 
 	assign data_out = data_out2[rptr[3:0]];
@@ -80,9 +80,9 @@ module read_pointer(
 
 	always @(posedge clk or negedge rst_n) begin
 		if(~rst_n) begin 
-			rptr <= 5'b000000;
+			rptr <= 5'b00000;
 		end else if(fifo_rd) begin
-		  rptr <= rptr + 5'b000001;
+		  rptr <= rptr + 5'b00001;
 		end else begin
 			rptr <= rptr;
 		end
@@ -170,9 +170,9 @@ module write_pointer(
 	assign fifo_we = (~fifo_full)& wr;
 	always @(posedge clk or negedge rst_n) begin
 		if (~rst_n) begin
-			wptr <= 5'b000000;
+			wptr <= 5'b00000;
 		end else if(fifo_we) begin
-			wptr <= wptr + 5'b000001;
+			wptr <= wptr + 5'b00001;
 		end else begin
 			wptr <= wptr;
 		end
