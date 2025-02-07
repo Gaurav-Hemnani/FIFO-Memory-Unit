@@ -58,7 +58,9 @@ module memory_array(
 		end
 	end
 
-	assign data_out = data_out2[rptr[3:0]];
+	always @(posedge clk) begin
+	  data_out <= data_out2[rptr[3:0]];
+	end
 
 endmodule
 
@@ -120,37 +122,40 @@ module status_signal(
 
     assign fbit_comp = wptr[4] ^ rptr[4];
 
-    assign pointer_equal = (wptr[3:0] - rptr[3:0]) ? 0:1;
+    assign pointer_equal = (wptr[3:0] == rptr[3:0]);
     assign pointer_result = wptr[4:0] - rptr[4:0];
     assign overflow_set = fifo_full & wr;
     assign underflow_set = fifo_empty & rd;
     
 	always @(*) begin
-        fifo_full = fbit_comp & pointer_equal;
-        fifo_empty = (~fbit_comp) & pointer_equal;
-        fifo_threshold = (pointer_result[4] || pointer_result[3]) ? 1:0;
+        fifo_full <= fbit_comp & pointer_equal;
+        fifo_empty <= (~fbit_comp) & pointer_equal;
+        fifo_threshold <= (pointer_result[4] || pointer_result[3]) ? 1:0;
     end
 
     always @(posedge clk or negedge rst_n) begin
-        if(~rst_n) fifo_overflow <= 0;
-        else if((overflow_set == 1) && (fifo_rd == 0))
-            fifo_overflow <= 1;
-        else if(fifo_rd)
-            fifo_overflow <= 0;
-        else
+        if(~rst_n) begin
+		  fifo_overflow <= 0;
+		end else if((overflow_set == 1) && (fifo_rd == 0)) begin
+		  fifo_overflow <= 1;
+		end else if(fifo_rd) begin
+		  fifo_overflow <= 0;
+		end else begin
             fifo_overflow <= fifo_overflow;
         end
+	end
 
-        always @(posedge clk or negedge rst_n)
-        begin
-            if(~rst_n) fifo_underflow <= 0;
-            else if((underflow_set == 1) && (fifo_we == 0))
-                fifo_underflow <= 1;
-            else if(fifo_we)
-                fifo_underflow <= 0;
-            else
-                fifo_underflow <= fifo_underflow;
-        end
+	always @(posedge clk or negedge rst_n) begin
+		if(~rst_n) begin
+		  fifo_underflow <= 0;
+		end else if((underflow_set == 1) && (fifo_we == 0)) begin
+		  fifo_underflow <= 1;
+		end else if(fifo_we) begin
+		  fifo_underflow <= 0;
+		end else begin
+		  fifo_underflow <= fifo_underflow;
+		end	
+	end
 
 endmodule
 
