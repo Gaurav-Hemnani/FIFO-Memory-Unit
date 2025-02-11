@@ -47,5 +47,7 @@ module fifo_basic_tb;
         rd = 0;
         #50;
         $finish;
+
     end
+    
 endmodule

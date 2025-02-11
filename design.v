@@ -48,9 +48,9 @@ module memory_array(
 	input[7:0] data_in;
 	input clk,fifo_we;
 	input[4:0] wptr,rptr;
-	output[7:0] data_out;
+	output reg [7:0] data_out;
 	reg[7:0] data_out2[15:0];
-	wire[7:0] data_out;
+	//wire[7:0] data_out;
 
 	always @(posedge clk) begin
 		if(fifo_we) begin
@@ -72,8 +72,8 @@ module read_pointer(
 	rd,
 	fifo_empty,
 	clk,
-	rst_n
-);
+	rst_n);
+	
 	input rd,fifo_empty,clk,rst_n;
 	output[4:0] rptr;
 	output fifo_rd;
