@@ -18,11 +18,20 @@ module fifo_basic_tb;
         .data_in(data_in)
     );
 
-    always #5 clk = ~clk; // 10ns Clock Period
+    always begin
+      #5; 
+      clk = ~clk; // 10ns Clock Period
+    end 
 
     initial begin
-        clk = 0; rst_n = 0; wr = 0; rd = 0; data_in = 8'h00;
-        #10 rst_n = 1;
+        clk = 0; 
+        rst_n = 0; 
+        wr = 0; 
+        rd = 0; 
+        data_in = 8'h00;
+        
+        #10; 
+        rst_n = 1;
 
         $display("Basic Functional Test");
         
@@ -38,7 +47,8 @@ module fifo_basic_tb;
 
         // Read 5 data words
         repeat (5) begin
-            #10 rd = 1;
+            #10; 
+            rd = 1;
             $monitor("Time: %0t      data_out: %h", $time, data_out);
         end
 
@@ -49,5 +59,5 @@ module fifo_basic_tb;
         $finish;
 
     end
-    
+
 endmodule
